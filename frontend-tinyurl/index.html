@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <div>
+        <div class="card">
+            <h2>Let's shorten your looong links</h2>
+            <div class="input-container">
+                <input type="text" id="longUrl" placeholder="Enter your long URL">
+                <button id="shortenBtn">Shorten</button>
+            </div>
+        </div>
+
+        <div>
+            <h2>Shortened URLs</h2>
+            <div class="table-container">
+                <table id="shortenedUrls">
+                    <thead>
+                        <tr>
+                            <th>Long URL</th>
+                            <th>Short URL</th>
+                            <th>Key</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Populated dynamically by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("shortenBtn").addEventListener("click", function() {
+            var longUrl = document.getElementById("longUrl").value;
+
+            fetch('http://localhost:8080/newUrl', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({url: longUrl}),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle the response from the backend
+                console.log('Success:', data);
+                appendToTable(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        function appendToTable(data) {
+            var tableBody = document.querySelector('#shortenedUrls tbody');
+            var newRow = tableBody.insertRow();
+
+            var longUrlCell = newRow.insertCell(0);
+            longUrlCell.textContent = data.longUrl;
+
+            var shortUrlCell = newRow.insertCell(1);
+            var shortUrlLink = document.createElement('a');
+            shortUrlLink.href = data.shortUrl;
+            shortUrlLink.textContent = data.shortUrl;
+            shortUrlCell.appendChild(shortUrlLink);
+
+            var keyCell = newRow.insertCell(2);
+            keyCell.textContent = data.keyValue;
+            
+            // Add delete button cell
+            var deleteCell = newRow.insertCell(3);
+            var deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.classList.add('delete-btn');
+            deleteCell.appendChild(deleteButton);
+            
+            deleteButton.addEventListener('click', function() {
+                // Send a request to delete the corresponding record
+                fetch('http://localhost:8080/' + data.keyValue, { method: 'DELETE' })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    // If the delete operation is successful, remove the row from the table
+                    newRow.remove(); // Remove the row from the table
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+
+            // Add event listener to short URL cell
+            shortUrlLink.addEventListener('click', function(event) {
+                // Prevent the default behavior (following the link)
+                event.preventDefault();
+                // Redirect to the original long URL
+                window.location.href = data.longUrl;
+            });
+        }
+    </script>
+</body>
+</html>

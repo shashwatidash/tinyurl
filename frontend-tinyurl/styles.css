@@ -1,0 +1,98 @@
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0; /* Background color of the body */
+    font-family: Arial, sans-serif;
+}
+
+.card {
+    background: linear-gradient(to bottom right, #0052D4, #4364F7, #6FB1FC); /* Gradient for the card */
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 400px;
+}
+
+.card h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: white; /* Text color for the h2 element */
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.input-container input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.input-container button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF; /* Background color for the button */
+    color: white; /* Text color for the button */
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.input-container button:hover {
+    background-color: #0056b3; /* Background color on hover */
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* Enable horizontal scrolling if needed */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    color:white;
+    overflow: hidden;
+    border: 1px solid #3C77DF;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    background-color: #5988DB;
+}
+
+th {
+    background-color: #3C77DF;
+}
+
+td.short-url {
+    color: white; /* Change color to black */
+    text-decoration: none; /* Remove underline */
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
